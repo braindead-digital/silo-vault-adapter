@@ -57,7 +57,7 @@ contract AdapterTest is Test {
 
     function measureGas(IAdapter.WeightInfo[] memory weights) internal returns (uint256) {
         uint256 startGas = gasleft();
-        adapter.rebalanceToWeights(weights);
+        adapter.rebalanceToWeights(weights, bytes32(0));
         return startGas - gasleft();
     }
 }

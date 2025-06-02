@@ -65,8 +65,9 @@ contract Adapter is IAdapter, UUPSUpgradeable, AccessControlUpgradeable {
 
     /// @notice Rebalances the vault to the given weights
     /// @param _weights The weights to rebalance to
+    /// @param _extraData Extra data to be emitted in the event, used to build subgraph
     /// @dev The weights are in 1e18 precision
-    function rebalanceToWeights(WeightInfo[] calldata _weights) external onlyRole(WORKER_ROLE) {
+    function rebalanceToWeights(WeightInfo[] calldata _weights, bytes32 _extraData) external onlyRole(WORKER_ROLE) {
         _verifySum();
         uint256 totalAssets = siloVault.totalAssets();
         uint256 len = _weights.length;
@@ -79,6 +80,7 @@ contract Adapter is IAdapter, UUPSUpgradeable, AccessControlUpgradeable {
             allocations[i] = MarketAllocation({market: IERC4626(weightInfo.asset), assets: amount});
         }
         siloVault.reallocate(allocations);
+        emit Rebalance(_weights, _extraData);
     }
 
     //// UPGRADEABLE FUNCTIONS /////

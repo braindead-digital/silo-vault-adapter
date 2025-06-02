@@ -7,5 +7,7 @@ interface IAdapter {
         address asset;
     }
 
-    function rebalanceToWeights(WeightInfo[] calldata _weights) external;
+    event Rebalance(WeightInfo[] weights, bytes32 extraData);
+
+    function rebalanceToWeights(WeightInfo[] calldata _weights, bytes32 _extraData) external;
 }
